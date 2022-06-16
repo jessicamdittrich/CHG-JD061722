@@ -2,7 +2,6 @@ const fs = require("fs");
 const uuidv4 = require("uuid");
 const util = require("util");
 
-
 const readAsync = util.promisify(fs.readFile);
 
 class Notes {
