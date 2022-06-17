@@ -16,8 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 // ADDED IN STATIC MIDDLEWARE FOR SERVING ASSETS IN PUBLIC FOLDER
 app.use(express.static("public"));
 
-app.get('/notes', noteRoute);
-app.get('*', indexRoute);
+app.use("/api", noteRoute);
+app.use("/", indexRoute);
 
 // CONFIRMING IN TERMINAL THAT CONNECTION IS WORKING
 app.listen(PORT, () => console.log(`listening at http://localhost:${PORT}`));

@@ -1,6 +1,12 @@
 [
     {
         "title":"Test Title",
-        "text":"Test text"
+        "text":"Test text",
+        "review_id": "0000"
+    }, 
+    {
+        "title":"Why does this not work",
+        "text":"I don't know..",
+        "review_id": "0001"
     }
 ]
