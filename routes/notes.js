@@ -24,7 +24,7 @@ noteRoute.get("/notes", (req, res) => {
 });
 
 // SAVING NEW NOTES TO LEFT HAND SIDE USING "POST"
-noteRoute.post("/notes", (res, req) => {
+noteRoute.post("/notes", (req, res) => {
 
   console.info(`${req.body} request received to add a review`); // THIS IS SHOWING AS UNDEFINED
   
@@ -41,7 +41,7 @@ noteRoute.post("/notes", (res, req) => {
     };
 
     // OBTAIN EXISTING NOTES
-    fs.readFile("../db/db.json", "utf8", (err, data) => {
+    fs.readFile("./db/db.json", "utf8", (err, data) => {
       if (err) {
         console.error(err);
       } else {
@@ -53,7 +53,7 @@ noteRoute.post("/notes", (res, req) => {
 
         // WRITE NOTE TO DB.JSON FILE
         fs.writeFile(
-          "../db/db.json",
+          "./db/db.json",
           JSON.stringify(parsedNotes, null, 4),
           (writeErr) =>
             writeErr
