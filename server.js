@@ -1,4 +1,4 @@
-// EXPRESS RELATED VARIABLES
+// EXPRESS & NPM
 const express = require("express");
 const noteRoute = require("./routes/notes.js");
 const indexRoute = require("./routes/index.js");
@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // ADDED IN STATIC MIDDLEWARE FOR SERVING ASSETS IN PUBLIC FOLDER
 app.use(express.static("public"));
 
+// SETTING UP ROUTES FOR NOTES & *
 app.use("/api", noteRoute);
 app.use("/", indexRoute);
 

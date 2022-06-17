@@ -1,69 +1,76 @@
-// EXPRESS RELATED VARIABLES
+// EXPRESS & NPM
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const uuid = require("../helpers/uuid");
-const db = require("../db/db.json");
 const util = require("util");
+const uuid = require("../helpers/uuid.js");
+const db = require("../db/db.json");
 
-const data = JSON.parse(fs.readFileSync(path.join(__dirname, "../db/db.json"), "utf8")) || [];
+
+const dataGet = JSON.parse(fs.readFileSync(path.join(__dirname, "../db/db.json"), "utf8")) || [];
 
 // INITIALIZE EXPRESS AS ROUTE
 const noteRoute = express.Router();
 
+// INPUTTING NOTED TO LEFT HAND SIDE USING "GET"
 noteRoute.get("/notes", (req, res) => {
-  fs.readFile(path.join(__dirname, "../db/db.json"), "utf8", (err, data) => {
+  fs.readFile(path.join(__dirname, "../db/db.json"), "utf8", (err, dataGet) => {
     if (err) {
       console.error(err);
       return;
     }
-    res.send(data);
+    res.send(dataGet);
   });
 });
 
+// SAVING NEW NOTES TO LEFT HAND SIDE USING "POST"
 noteRoute.post("/notes", (res, req) => {
-  
-  const { title, text } = req.body || {};
 
-  // If all the required properties are present
+  console.info(`${req.body} request received to add a review`); // THIS IS SHOWING AS UNDEFINED
+  
+  // CREATING OBJECT ARRAY
+  const { title, text } = req.body;
+
+  // IF REQUIRED TITLE AND TEXT ARE PRESENT...
   if (title && text) {
-    // Variable for the object we will save
+    // NEW NOTE WITH REQUIREMENTS
     const newNote = {
       title,
       text,
-      review_id: uuid(),
+      note_id: uuid(),
     };
 
-    // Obtain existing reviews
-    fs.readFile('../db/db.json', 'utf8', (err, data) => {
+    // OBTAIN EXISTING NOTES
+    fs.readFile("../db/db.json", "utf8", (err, data) => {
       if (err) {
         console.error(err);
       } else {
-        // Convert string into JSON object
+        // CONVERTING STRING TO JSON OBJECT
         const parsedNotes = JSON.parse(data);
 
-        // Add a new review
+        // ADDING NEW NOTE
         parsedNotes.push(newNote);
 
-        // Write updated reviews back to the file
+        // WRITE NOTE TO DB.JSON FILE
         fs.writeFile(
-          '../db/db.json',
-          JSON.stringify(parsedNotes),
+          "../db/db.json",
+          JSON.stringify(parsedNotes, null, 4),
           (writeErr) =>
             writeErr
               ? console.error(writeErr)
-              : console.info('Successfully updated reviews!')
-        );
+              : console.info("Successfully updated reviews!")
+        ); res.sendFile(path.join(__dirname, '../public/notes.html'))
       }
     });
 
+    // ADVISING WHAT HAPPENED
     const response = {
-      status: 'success',
+      status: "success",
       body: newNote,
     };
     res.status(201).json(response);
   } else {
-    res.status(500).json('Error in posting review');
+    res.status(500).json("Error in posting review");
   }
 
 });
